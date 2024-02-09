@@ -2,7 +2,7 @@ import requests
 import json
 from colorama import Fore, Style, init
 
-from utils.logger import montarLogEnvioRemessa
+#from utils.logger import montarLogEnvioRemessa
 
 init()
 
@@ -31,16 +31,16 @@ def autenticar(codigoAcesso, codigoUg):
         config_data['codigoUg'] = codigoUg
 
         msg = "Autenticação realizada com sucesso"
-        montarLogEnvioRemessa(msg, "")
+        #montarLogEnvioRemessa(msg, "")
         return token
     except requests.exceptions.RequestException as e:
         try:
             msg = "Erro ao autenticar: "
-            montarLogEnvioRemessa(msg, e.response.json())
+            #montarLogEnvioRemessa(msg, e.response.json())
             return
         except json.JSONDecodeError:
             msg = "Erro ao autenticar: "
-            montarLogEnvioRemessa(msg, e)
+            #montarLogEnvioRemessa(msg, e)
             return
             
 

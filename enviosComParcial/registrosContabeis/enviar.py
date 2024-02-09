@@ -87,7 +87,6 @@ def enviaMultiplosJsons(quantidadeArquivos):
             
             response = requests.post(url, headers=headers, params=params, json=dados)
             response.raise_for_status()
-            status_code = response.status_code
             Style.RESET_ALL
 
             data = datetime.now()
@@ -98,6 +97,7 @@ def enviaMultiplosJsons(quantidadeArquivos):
         except requests.exceptions.RequestException as e:
             msg = f'Erro ao enviar parcial de número: {count}'
             montarLogEnvioRemessa(msg, e.request.json())
+            status_code = response.status_code
             if (status_code == 401):
                 continuaEnvioCasoErroToken(count, quantidadeArquivos)
             break
