@@ -4,6 +4,7 @@ from colorama import Fore, Style, init
 import os
 import sys
 import simplejson
+from datetime import datetime
 
 diretorio_atual = os.path.dirname(os.path.abspath(__file__))
 
@@ -12,6 +13,8 @@ sys.path.append(os.path.join(diretorio_atual, '..', '..'))
 from gerais.cancelarChavePacoteAutomatico import cancelarChavePacote
 from utils.converteArquivo import converterTxtToJson
 from utils.montaTotalizador import montaTotalizadorTributario
+from utils.logger import montarLogEnvioRemessa
+from utils.formatadorDeDatas import formatToDDMMYYYYHHMMSS
 
 init()
 
@@ -39,7 +42,8 @@ def verificaSeTodosPacotesSucesso():
                     break
 
         except requests.exceptions.RequestException as e:
-            print(f"Erro ao consultar o status dos lotes. {e.response.json()}")
+            msg = 'Erro ao consultar o status dos lotes.'
+            montarLogEnvioRemessa(msg, e.request.json())
             break
 
 def obterChavePacote():
@@ -106,14 +110,15 @@ def enviaMultiplosJsons():
             response = requests.post(url, headers=headers, params=params, json=dados)
             response.raise_for_status()
 
-            resposta = response.json()
-            resposta['chavePacote'] = chavePacote
-            print (Fore.GREEN + f'Envio realizado com sucesso: {resposta}')
+            data = datetime.now()
+            dataStr = formatToDDMMYYYYHHMMSS(data)
+            msg = f'Json de número {count} chavePacote = {chavePacote} enviado na data {dataStr} ''\''
+            montarLogEnvioRemessa(msg, "")
             Style.RESET_ALL
             count+=1
         except requests.exceptions.RequestException as e:
-            print(f"Erro no json de número {count}")
-            print(Fore.RED + f'Erro ao enviar parcial: {e.response.json()}')
+            msg = f'Erro ao enviar parcial de número: {count}'
+            montarLogEnvioRemessa(msg, e.request.json())
             break
 
 def enviarParcial():

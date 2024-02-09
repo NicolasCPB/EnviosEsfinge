@@ -87,7 +87,7 @@ def enviaMultiplosJsons(quantidadeArquivos):
             
             response = requests.post(url, headers=headers, params=params, json=dados)
             response.raise_for_status()
-
+            status_code = response.status_code
             Style.RESET_ALL
 
             data = datetime.now()
@@ -98,6 +98,8 @@ def enviaMultiplosJsons(quantidadeArquivos):
         except requests.exceptions.RequestException as e:
             msg = f'Erro ao enviar parcial de número: {count}'
             montarLogEnvioRemessa(msg, e.request.json())
+            if (status_code == 401):
+                continuaEnvioCasoErroToken(count, quantidadeArquivos)
             break
 
 def enviarParcial():
@@ -118,7 +120,42 @@ def enviarParcial():
         enviaMultiplosJsons(quantidadeArquivos)
         return quantidadeArquivos
 
-        
+def continuaEnvioCasoErroToken(jsonNumero, quantidadeArquivos):
+    while jsonNumero < int(quantidadeArquivos) + 1:
+        nomeArquivo = str(jsonNumero) + '.json'
+        try:
+            url = urlBase + '/registroscontabeis/municipais/enviarParcial'
+
+            params = {
+                'chavePacote': chavePacote
+            }
+            try:
+                caminho_diretorio = os.path.join("C:", "arquivos",)
+                caminho_arquivo = os.path.join(caminho_diretorio, nomeArquivo)
+                with open(caminho_arquivo, "r", encoding="utf-8") as arquivo:
+                    dados = simplejson.load(arquivo, use_decimal=True)
+            except UnicodeDecodeError as e:
+                print(f"Erro de decodificação: {e}")
+            except json.JSONDecodeError as e:
+                print(f"Erro de decodificação JSON: {e}")
+            
+            response = requests.post(url, headers=headers, params=params, json=dados)
+            response.raise_for_status()
+            status_code = response.status_code
+            Style.RESET_ALL
+
+            data = datetime.now()
+            dataStr = formatToDDMMYYYYHHMMSS(data)
+            msg = f'Json de número {jsonNumero} chavePacote = {chavePacote} enviado na data {dataStr} ''\''
+            montarLogEnvioRemessa(msg, "")
+            jsonNumero+=1
+        except requests.exceptions.RequestException as e:
+            msg = f'Erro ao enviar parcial de número: {jsonNumero}'
+            montarLogEnvioRemessa(msg, e.request.json())
+            if (status_code == 401):
+                continuaEnvioCasoErroToken(jsonNumero, quantidadeArquivos)
+            break
+
 chavePacote = obterChavePacote()['chavePacote']
 quantidadeArquivos = enviarParcial()
 if (input("Deseja chamar a finaliza? [1] Sim | [2] Não: ") == "1"):
