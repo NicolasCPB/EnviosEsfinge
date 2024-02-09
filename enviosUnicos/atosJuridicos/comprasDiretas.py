@@ -14,7 +14,7 @@ init()
 with open('config.json', 'r') as file:
     config_data = json.load(file)
 
-urlBase = config_data['urlBase']['QA']
+urlBase = config_data['urlBase']
 headers = config_data['headers']
 
 def enviar():

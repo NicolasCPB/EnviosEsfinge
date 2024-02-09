@@ -4,7 +4,6 @@ from colorama import Fore, Style, init
 import os
 import sys
 import simplejson
-from datetime import datetime
 
 diretorio_atual = os.path.dirname(os.path.abspath(__file__))
 
@@ -12,9 +11,7 @@ sys.path.append(os.path.join(diretorio_atual, '..', '..'))
 
 from gerais.cancelarChavePacoteAutomatico import cancelarChavePacote
 from utils.converteArquivo import converterTxtToJson
-from utils.montaTotalizador import montaTotalizadorRCM
-from utils.logger import montarLogEnvioRemessa
-from utils.formatadorDeDatas import formatToDDMMYYYYHHMMSS
+from utils.montaTotalizador import montaTotalizadorTributario
 
 init()
 
@@ -24,11 +21,32 @@ with open('config.json', 'r') as file:
 urlBase = config_data['urlBase']
 headers = config_data['headers']
 
+def verificaSeTodosPacotesSucesso():
+    while True:
+        try:
+            url = urlBase + '/servicosGerais/consultarStatusLotePorChavePacote/' + chavePacote
+
+            response = requests.post(url, headers)
+            response.raise_for_status()
+
+            resposta = response.json()
+
+            parar = 0
+            for i in range(len(resposta)):
+                if resposta[i]['situacao'] == 'PROCESSADO_SUCESSO':
+                    parar += 1
+                if (parar == len(resposta)):
+                    break
+
+        except requests.exceptions.RequestException as e:
+            print(f"Erro ao consultar o status dos lotes. {e.response.json()}")
+            break
+
 def obterChavePacote():
     anoMes = input("anoMes: ")
     def pegarChave(anoMes):
         try:
-            url = urlBase + '/registroscontabeis/municipais/iniciarEnvio'
+            url = urlBase + '/tributario/iniciarEnvio'
             params = {
                 'anoMes': anoMes
             }
@@ -65,12 +83,12 @@ def obterChavePacote():
 
     return retorno
 
-def enviaMultiplosJsons(quantidadeArquivos):
+def enviaMultiplosJsons():
     count = 1
     while count < int(quantidadeArquivos) + 1:
         nomeArquivo = str(count) + '.json'
         try:
-            url = urlBase + '/registroscontabeis/municipais/enviarParcial'
+            url = urlBase + '/tributario/enviarParcialLote'
 
             params = {
                 'chavePacote': chavePacote
@@ -88,16 +106,14 @@ def enviaMultiplosJsons(quantidadeArquivos):
             response = requests.post(url, headers=headers, params=params, json=dados)
             response.raise_for_status()
 
+            resposta = response.json()
+            resposta['chavePacote'] = chavePacote
+            print (Fore.GREEN + f'Envio realizado com sucesso: {resposta}')
             Style.RESET_ALL
-
-            data = datetime.now()
-            dataStr = formatToDDMMYYYYHHMMSS(data)
-            msg = f'Json de número {count} chavePacote = {chavePacote} enviado na data {dataStr} ''\''
-            montarLogEnvioRemessa(msg, "")
             count+=1
         except requests.exceptions.RequestException as e:
-            msg = f'Erro ao enviar parcial de número: {count}'
-            montarLogEnvioRemessa(msg, e.request.json())
+            print(f"Erro no json de número {count}")
+            print(Fore.RED + f'Erro ao enviar parcial: {e.response.json()}')
             break
 
 def enviarParcial():
@@ -117,15 +133,17 @@ def enviarParcial():
         quantidadeArquivos = input("Qual a quantidade de Jsons que foram gerados? ")
         enviaMultiplosJsons(quantidadeArquivos)
         return quantidadeArquivos
-
-        
-chavePacote = obterChavePacote()['chavePacote']
+    
+chavePacote = obterChavePacote()
 quantidadeArquivos = enviarParcial()
-if (input("Deseja chamar a finaliza? [1] Sim | [2] Não: ") == "1"):
-        try:
-            url = urlBase + '/registroscontabeis/municipais/finalizarEnvio'
 
-            montaTotalizadorRCM(quantidadeArquivos)
+if (input("Deseja chamar a finaliza? [1] Sim | [2] Não: ") == "1"):
+        print("Verificando se todos os lotes foram processados. Aguarde, não pare o sistema.")
+        verificaSeTodosPacotesSucesso()
+        try:
+            url = urlBase + '/tributario/finalizarEnvio'
+
+            montaTotalizadorTributario(quantidadeArquivos)
 
             with open("finalizaJson.json", "r", encoding="utf-8") as arquivo:
                 dados = simplejson.load(arquivo)
@@ -137,5 +155,4 @@ if (input("Deseja chamar a finaliza? [1] Sim | [2] Não: ") == "1"):
 
             resposta = response.json()
         except requests.exceptions.RequestException as e:
-            msg = "Erro ao finalizar o pacote: "
-            montarLogEnvioRemessa(msg, e.request.json())
+            print(f"Erro ao finalizar o pacote: {e.response.json()}")

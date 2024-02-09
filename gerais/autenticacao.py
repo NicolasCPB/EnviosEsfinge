@@ -2,16 +2,15 @@ import requests
 import json
 from colorama import Fore, Style, init
 
+from utils.logger import montarLogEnvioRemessa
+
 init()
 
 with open('config.json', 'r') as file:
     config_data = json.load(file)
 
-def autenticar():
-    codigoAcesso = input('Código acesso: ')
-    codigoUg = input('Código UG: ')
-
-    url = config_data['urlBase']['QA'] + '/autenticacao/login'
+def autenticar(codigoAcesso, codigoUg):
+    url = config_data['urlBase'] + '/autenticacao/login'
     headers = {
         'codigoAcesso': codigoAcesso,
         'senha': '123456'
@@ -28,16 +27,27 @@ def autenticar():
 
         token = response.json()['chave']
         print(Fore.GREEN + "Login realizado com sucesso!")
+        config_data['codigoAcesso'] = codigoAcesso
+        config_data['codigoUg'] = codigoUg
+
+        msg = "Autenticação realizada com sucesso"
+        montarLogEnvioRemessa(msg, "")
         return token
     except requests.exceptions.RequestException as e:
         try:
-            return print(Fore.RED + f"Erro na requisição: {e.response.json()}")
+            msg = "Erro ao autenticar: "
+            montarLogEnvioRemessa(msg, e.response.json())
+            return
         except json.JSONDecodeError:
-            return print(Fore.RED + f"Erro na requisição: {e}")
+            msg = "Erro ao autenticar: "
+            montarLogEnvioRemessa(msg, e)
+            return
             
 
 Style.RESET_ALL
-token = autenticar()
+codigoAcesso = input('Código acesso: ')
+codigoUg = input('Código UG: ')
+token = autenticar(codigoAcesso, codigoUg)
 config_data['headers']['AUTH_TOKEN'] = token
 
 with open('config.json', 'w') as file:

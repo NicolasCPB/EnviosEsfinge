@@ -5,7 +5,7 @@ def cancelarChavePacote(chavePacote):
     with open('config.json', 'r') as file:
         config_data = json.load(file)
     headers = config_data['headers']
-    urlBase = config_data['urlBase']['QA']
+    urlBase = config_data['urlBase']
     url = urlBase + '/servicosGerais/cancelarEnvioParcial'
     try:
         params = {

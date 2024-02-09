@@ -1,0 +1,4 @@
+usar python 3.11
+
+pip install colorama
+pip install simplejson
