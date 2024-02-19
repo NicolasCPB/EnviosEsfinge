@@ -4,6 +4,7 @@ from decimal import Decimal
 
 diretorio_arquivos = 'testes/arquivos/'
 
+#Converte um único arquivo txt em múltiplos JSONs
 def converterTxtToJson(arquivo_txt):
     objetos_json = []
 
@@ -27,6 +28,23 @@ def converterTxtToJson(arquivo_txt):
 
         with open(caminho_arquivo, 'w') as json_file:
             simplejson.dump(objetos_json[i], json_file, indent=2, default=serialize_decimal)
+
+#Converte múltiplos txt em múltiplos JSONs
+def converter1TxtTo1Json():
+    print()
+    quantidadeTxt = int(input("Quantidade de arquivos txt para converter: "))
+    nomeBase = input("Nome base do arquivo para converter: ")
+    count = 1
+    while count <= quantidadeTxt:
+        nomeArquivoTXT = nomeBase + str(count) + ".txt"
+        nomeArquivoJSON = nomeBase + str(count) + ".json"
+        caminho_diretorio = os.path.join("C:", "arquivos")
+        caminho_arquivoTXT = os.path.join(caminho_diretorio, nomeArquivoTXT)
+        caminho_arquivoJSON = os.path.join(caminho_diretorio, nomeArquivoJSON)
+        if not os.path.exists(caminho_diretorio):
+            os.makedirs(caminho_diretorio)
+        os.rename(caminho_arquivoTXT, caminho_arquivoJSON)
+        count+=1
 
 def serialize_decimal(obj):
     if isinstance(obj, Decimal):
