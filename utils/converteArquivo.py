@@ -31,13 +31,12 @@ def converterTxtToJson(arquivo_txt):
 
 #Converte múltiplos txt em múltiplos JSONs
 def converter1TxtTo1Json():
-    print()
     quantidadeTxt = int(input("Quantidade de arquivos txt para converter: "))
     nomeBase = input("Nome base do arquivo para converter: ")
     count = 1
     while count <= quantidadeTxt:
         nomeArquivoTXT = nomeBase + str(count) + ".txt"
-        nomeArquivoJSON = nomeBase + str(count) + ".json"
+        nomeArquivoJSON = str(count) + ".json"
         caminho_diretorio = os.path.join("C:", "arquivos")
         caminho_arquivoTXT = os.path.join(caminho_diretorio, nomeArquivoTXT)
         caminho_arquivoJSON = os.path.join(caminho_diretorio, nomeArquivoJSON)
