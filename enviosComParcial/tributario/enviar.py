@@ -87,8 +87,9 @@ def obterChavePacote():
 
     return retorno
 
-def enviaMultiplosJsons():
+def enviaMultiplosJsons(quantidadeArquivos):
     count = 1
+    print("Enviando...")
     while count < int(quantidadeArquivos) + 1:
         nomeArquivo = str(count) + '.json'
         try:
@@ -101,7 +102,7 @@ def enviaMultiplosJsons():
                 caminho_diretorio = os.path.join("C:", "arquivos",)
                 caminho_arquivo = os.path.join(caminho_diretorio, nomeArquivo)
                 with open(caminho_arquivo, "r", encoding="utf-8") as arquivo:
-                    dados = simplejson.load(arquivo, use_decimal=True)
+                    dados = simplejson.load(arquivo)
             except UnicodeDecodeError as e:
                 print(f"Erro de decodificação: {e}")
             except json.JSONDecodeError as e:
@@ -112,15 +113,17 @@ def enviaMultiplosJsons():
 
             data = datetime.now()
             dataStr = formatToDDMMYYYYHHMMSS(data)
-            msg = f'Json de número {count} chavePacote = {chavePacote} enviado na data {dataStr} ''\''
+            numero_lote = response.json()['numeroLote']
+            msg = f'Json de número: {count} | chavePacote: {chavePacote} | número lote: {numero_lote} | enviado na data: {dataStr}'
             montarLogEnvioRemessa(msg, "")
             Style.RESET_ALL
             count+=1
         except requests.exceptions.RequestException as e:
+            print("Envio finalizado")
             msg = f'Erro ao enviar parcial de número: {count}'
-            montarLogEnvioRemessa(msg, e.request.json())
+            montarLogEnvioRemessa(msg, e)
             break
-
+    print("Envio finalizado")
 def enviarParcial():
     umUnicoArquivo = int(input('Os JSON estão em vários arquivo ou em um único? Digite [1] para 1 único arquivo ou [2] para múltiplos arquivos: '))
     if (umUnicoArquivo == 2):
@@ -139,7 +142,7 @@ def enviarParcial():
         enviaMultiplosJsons(quantidadeArquivos)
         return quantidadeArquivos
     
-chavePacote = obterChavePacote()
+chavePacote = obterChavePacote()['chavePacote']
 quantidadeArquivos = enviarParcial()
 
 if (input("Deseja chamar a finaliza? [1] Sim | [2] Não: ") == "1"):
