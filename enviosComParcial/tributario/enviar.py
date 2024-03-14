@@ -81,9 +81,12 @@ def obterChavePacote():
     retorno = pegarChave(anoMes)
 
     if retorno['status'] == 'Chave aberta':
-        cancela = cancelarChavePacote(retorno['chavePacote'])
-        if (cancela == 200):
-            retorno = pegarChave(anoMes)
+        if(int(input('Já há uma chave de pacote, deseja continuar o envio? [1] Sim | [2] Não: ')) == 2):
+            cancela = cancelarChavePacote(retorno['chavePacote'])
+            if (cancela == 200):
+                retorno = pegarChave(anoMes)
+        else:
+            return retorno
 
     return retorno
 
