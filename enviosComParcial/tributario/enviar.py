@@ -4,7 +4,7 @@ from colorama import Fore, Style, init
 import os
 import sys
 import simplejson
-from datetime import datetime
+import gc
 
 diretorio_atual = os.path.dirname(os.path.abspath(__file__))
 
@@ -116,6 +116,10 @@ def enviaMultiplosJsons(quantidadeArquivos):
             montarLogEnvioRemessa("Enviando remessa para o e-Sfinge Online. ")
             response = requests.post(url, headers=headers, params=params, json=dados)
             response.raise_for_status()
+
+            #Limpa os dados da memória
+            del dados
+            gc.collect()
 
             numero_lote = response.json()['numeroLote']
             msg = f'Json de número: {count} | chavePacote: {chavePacote} | número lote: {numero_lote} | enviado na data: {getDataAtualString()}'
