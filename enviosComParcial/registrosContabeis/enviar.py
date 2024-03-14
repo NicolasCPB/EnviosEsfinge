@@ -14,7 +14,7 @@ from gerais.cancelarChavePacoteAutomatico import cancelarChavePacote
 from utils.converteArquivo import converterTxtToJson
 from utils.montaTotalizador import montaTotalizadorRCM
 from utils.logger import montarLogEnvioRemessa
-from utils.formatadorDeDatas import formatToDDMMYYYYHHMMSS
+from utils.dataUtil import getDataAtualString
 
 init()
 
@@ -89,9 +89,7 @@ def enviaMultiplosJsons(quantidadeArquivos):
             response.raise_for_status()
             Style.RESET_ALL
 
-            data = datetime.now()
-            dataStr = formatToDDMMYYYYHHMMSS(data)
-            msg = f'Json de número {count} chavePacote = {chavePacote} enviado na data {dataStr} ''\''
+            msg = f'Json de número {count} chavePacote = {chavePacote} enviado na data {getDataAtualString()} ''\''
             montarLogEnvioRemessa(msg, "")
             count+=1
         except requests.exceptions.RequestException as e:
@@ -144,9 +142,7 @@ def continuaEnvioCasoErroToken(jsonNumero, quantidadeArquivos):
             status_code = response.status_code
             Style.RESET_ALL
 
-            data = datetime.now()
-            dataStr = formatToDDMMYYYYHHMMSS(data)
-            msg = f'Json de número {jsonNumero} chavePacote = {chavePacote} enviado na data {dataStr} ''\''
+            msg = f'Json de número {jsonNumero} chavePacote = {chavePacote} enviado na data {getDataAtualString()} ''\''
             montarLogEnvioRemessa(msg, "")
             jsonNumero+=1
         except requests.exceptions.RequestException as e:
