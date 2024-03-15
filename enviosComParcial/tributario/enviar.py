@@ -113,8 +113,9 @@ def enviaMultiplosJsons(quantidadeArquivos):
             except json.JSONDecodeError as e:
                 print(f"Erro de decodificação JSON: {e}")
             
-            montarLogEnvioRemessa("Enviando remessa para o e-Sfinge Online. ")
+            montarLogEnvioRemessa(f'Enviando remessa para o e-Sfinge Online. {getDataAtualString()}', "")
             response = requests.post(url, headers=headers, params=params, json=dados)
+            montarLogEnvioRemessa(f'Envio realizado com sucesso. {getDataAtualString()}', "")
             response.raise_for_status()
 
             #Limpa os dados da memória
