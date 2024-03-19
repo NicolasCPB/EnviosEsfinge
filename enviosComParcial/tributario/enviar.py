@@ -105,17 +105,13 @@ def enviaMultiplosJsons(quantidadeArquivos):
                 caminho_diretorio = os.path.join("C:", "arquivos",)
                 caminho_arquivo = os.path.join(caminho_diretorio, nomeArquivo)
                 with open(caminho_arquivo, "r", encoding="utf-8") as arquivo:
-                    montarLogEnvioRemessa(f'Lendo JSON para envio. {getDataAtualString()}', '')
                     dados = simplejson.load(arquivo)
-                    montarLogEnvioRemessa(f'Finalizada leitura do JSON para envio. {getDataAtualString()}', '')
             except UnicodeDecodeError as e:
                 print(f"Erro de decodificação: {e}")
             except json.JSONDecodeError as e:
                 print(f"Erro de decodificação JSON: {e}")
             
-            montarLogEnvioRemessa(f'Enviando remessa para o e-Sfinge Online. {getDataAtualString()}', "")
             response = requests.post(url, headers=headers, params=params, json=dados)
-            montarLogEnvioRemessa(f'Envio realizado com sucesso. {getDataAtualString()}', "")
             response.raise_for_status()
 
             #Limpa os dados da memória
