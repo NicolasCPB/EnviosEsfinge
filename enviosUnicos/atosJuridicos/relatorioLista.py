@@ -128,42 +128,59 @@ def salvar_erro(status_resultado, idRelatorio):
 def enviar():
     excluir_arquivos_anteriores()
     urlBase, headers = carregar_config()
-    
-    try:
-        lista_relatorios = obter_lista_relatorios(urlBase, headers)
-        
-        idRelatorio = int(input(Fore.YELLOW + "\nDigite o 'identificadorRelatorio' desejado: " + Style.RESET_ALL))
-        parametros = obter_parametros_relatorio(urlBase, headers, idRelatorio)
-        parametros, formato_exportacao = preencher_parametros(parametros)
-        
-        idSolicitacao = enviar_solicitacao(urlBase, headers, parametros)
-        
+
+    if(int(input("Deseja enviar [1] ou reenviar [2]")) == 2):
+        idRelatorio = str(input("Qual o id do relatório? "))
+        idSolicitacao = reenviarRelatorio(idRelatorio, headers, urlBase)
         status_resultado = verificar_status_solicitacao(urlBase, headers, idSolicitacao)
-        
-        if status_resultado['status'] == "RECEBIDO":
-            print(Fore.YELLOW + "Status recebido. Realizando segunda consulta..." + Style.RESET_ALL)
+    else:
+        try:
+            obter_lista_relatorios(urlBase, headers)
             
-            while True:
-                time.sleep(5)
-                status_resultado = verificar_status_solicitacao(urlBase, headers, idSolicitacao)
-                print(Fore.BLUE + f"Novo Status: {status_resultado['status']}" + Style.RESET_ALL)
+            idRelatorio = int(input(Fore.YELLOW + "\nDigite o 'identificadorRelatorio' desejado: " + Style.RESET_ALL))
+            parametros = obter_parametros_relatorio(urlBase, headers, idRelatorio)
+            parametros, formato_exportacao = preencher_parametros(parametros)
+            
+            idSolicitacao = enviar_solicitacao(urlBase, headers, parametros)
+            
+            status_resultado = verificar_status_solicitacao(urlBase, headers, idSolicitacao)
+        except requests.RequestException as e:
+            print(Fore.RED + f"Erro na requisição: {e}" + Style.RESET_ALL)
+        except json.JSONDecodeError as e:
+            print(Fore.RED + f"Erro ao decodificar JSON: {e}" + Style.RESET_ALL)
+        except Exception as e:
+            print(Fore.RED + f"Ocorreu um erro: {e}" + Style.RESET_ALL)
 
-                if status_resultado['status'] == "PROCESSADO_SUCESSO":
-                    print(Fore.GREEN + "Relatório processado com sucesso." + Style.RESET_ALL)
-                    exportar_dados(status_resultado, formato_exportacao, idRelatorio)
-                    break
+    if status_resultado['status'] == "RECEBIDO":
+        print(Fore.YELLOW + "Status recebido. Realizando segunda consulta..." + Style.RESET_ALL)
+        
+        while True:
+            time.sleep(5)
+            status_resultado = verificar_status_solicitacao(urlBase, headers, idSolicitacao)
+            print(Fore.BLUE + f"Novo Status: {status_resultado['status']}" + Style.RESET_ALL)
 
-                elif status_resultado['status'] == "PROCESSADO_ERRO_INTERNO":
-                    print(Fore.RED + "Erro interno ao processar o relatório." + Style.RESET_ALL)
-                    salvar_erro(status_resultado, idRelatorio)
-                    break
-    except requests.RequestException as e:
-        print(Fore.RED + f"Erro na requisição: {e}" + Style.RESET_ALL)
-    except json.JSONDecodeError as e:
-        print(Fore.RED + f"Erro ao decodificar JSON: {e}" + Style.RESET_ALL)
-    except Exception as e:
-        print(Fore.RED + f"Ocorreu um erro: {e}" + Style.RESET_ALL)
+            if status_resultado['status'] == "PROCESSADO_SUCESSO":
+                print(Fore.GREEN + "Relatório processado com sucesso." + Style.RESET_ALL)
+                exportar_dados(status_resultado, formato_exportacao, idRelatorio)
+                break
 
+            elif status_resultado['status'] == "PROCESSADO_ERRO_INTERNO":
+                print(Fore.RED + "Erro interno ao processar o relatório." + Style.RESET_ALL)
+                salvar_erro(status_resultado, idRelatorio)
+                break
+
+
+def reenviarRelatorio(idRelatorio, headers, urlBase):
+    path = os.path.join(pasta_arquivos, 'parametros_relatorio_' + idRelatorio + '.json')
+    with open(path, 'r', encoding='utf-8') as file:
+        body = json.load(file)
+    url_gerar = urlBase + '/relatorio/gerar'
+    response = requests.post(url_gerar, json=body, headers=headers)
+    response.raise_for_status()
+    resultado = response.json()
+    salvar_arquivo(resultado, 'retorno_solicitacao.json')
+    return resultado['idSolicitacao']
+    
 # Executando o script
 if __name__ == '__main__':
     enviar()
