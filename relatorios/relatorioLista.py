@@ -93,11 +93,31 @@ def enviar_solicitacao(urlBase, headers, parametros):
 
 def verificar_status_solicitacao(urlBase, headers, idSolicitacao):
     url_status = urlBase + f'/relatorio/status/{idSolicitacao}'
-    response = requests.get(url_status, headers=headers)
-    response.raise_for_status()
-    status_resultado = response.json()
-    salvar_arquivo(status_resultado, 'status_solicitacao.json')
-    return status_resultado
+    try:
+        response = requests.get(url_status, headers=headers)
+        response.raise_for_status()
+        status_resultado = response.json()
+        salvar_arquivo(status_resultado, 'status_solicitacao.json')
+        return status_resultado
+    except requests.exceptions.HTTPError as e:
+        print(Fore.RED + f"Erro HTTP: {e.response.status_code}" + Style.RESET_ALL)
+        erro_detalhado = {
+            "status": "FALHA_NA_REQUISICAO",
+            "erro": e.response.text or 'Erro HTTP sem detalhes',
+            "codigo_http": e.response.status_code,
+            "detalhes": e.response.headers.get('Content-Type', 'Tipo de conteúdo não especificado')
+        }
+        salvar_erro(erro_detalhado, idSolicitacao)
+        return erro_detalhado
+    except requests.RequestException as e:
+        print(Fore.RED + f"Erro na requisição: {e}" + Style.RESET_ALL)
+        erro_detalhado = {
+            "status": "FALHA_NA_REQUISICAO",
+            "erro": str(e),
+            "detalhes": "Detalhe adicional não disponível"
+        }
+        salvar_erro(erro_detalhado, idSolicitacao)
+        return erro_detalhado
 
 def exportar_dados(status_resultado, formato_exportacao, idRelatorio):
     if "base64Dados" in status_resultado:
@@ -120,8 +140,10 @@ def exportar_dados(status_resultado, formato_exportacao, idRelatorio):
 
 def salvar_erro(status_resultado, idRelatorio):
     erro_dados = {
-        "status": status_resultado['status'],
-        "erro": status_resultado.get('erro', 'Erro desconhecido')
+        "status": status_resultado.get('status', 'Status desconhecido'),
+        "erro": status_resultado.get('erro', 'Erro desconhecido'),
+        "codigo_http": status_resultado.get('codigo_http', 'Código HTTP não disponível'),
+        "detalhes": status_resultado.get('detalhes', 'Nenhum detalhe adicional fornecido')
     }
     salvar_arquivo(erro_dados, f'erro_relatorio_{idRelatorio}.json')
 
@@ -159,11 +181,8 @@ def enviar():
                     break
     except requests.RequestException as e:
         print(Fore.RED + f"Erro na requisição: {e}" + Style.RESET_ALL)
-    except json.JSONDecodeError as e:
-        print(Fore.RED + f"Erro ao decodificar JSON: {e}" + Style.RESET_ALL)
     except Exception as e:
-        print(Fore.RED + f"Ocorreu um erro: {e}" + Style.RESET_ALL)
+        print(Fore.RED + f"Erro inesperado: {str(e)}" + Style.RESET_ALL)
 
-# Executando o script
 if __name__ == '__main__':
     enviar()

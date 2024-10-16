@@ -4,10 +4,7 @@ from colorama import Fore, Style, init
 import os
 import sys
 import simplejson
-import schedule
-import time
 from datetime import datetime
-from functools import partial
 
 diretorio_atual = os.path.dirname(os.path.abspath(__file__))
 
@@ -21,8 +18,6 @@ from utils.dataUtil import getDataAtualString
 
 init()
 
-count = 1
-
 with open('config.json', 'r') as file:
     config_data = json.load(file)
 
@@ -33,7 +28,7 @@ def obterChavePacote():
     anoMes = input("anoMes: ")
     def pegarChave(anoMes):
         try:
-            url = urlBase + '/registroscontabeis/municipais/iniciarEnvio'
+            url = urlBase + '/registroscontabeis/empresas/iniciarEnvio'
             params = {
                 'anoMes': anoMes
             }
@@ -65,26 +60,23 @@ def obterChavePacote():
 
     if retorno['status'] == 'Chave aberta':
         cancela = cancelarChavePacote(retorno['chavePacote'])
-        if (cancela == 200):
+        if cancela == 200:
             retorno = pegarChave(anoMes)
 
     return retorno
 
 def enviaMultiplosJsons(quantidadeArquivos):
-    global count 
-
-    def chamarEsfinge():
-        global count 
-        print('Função Chamada' + str(count))
+    count = 1
+    while count < int(quantidadeArquivos) + 1:
         nomeArquivo = str(count) + '.json'
         try:
-            url = urlBase + '/registroscontabeis/municipais/enviarParcial'
+            url = urlBase + '/registroscontabeis/empresas/enviarParcial'
 
             params = {
                 'chavePacote': chavePacote
             }
             try:
-                caminho_diretorio = os.path.join("C:", "arquivos",)
+                caminho_diretorio = os.path.join("C:", "arquivos")
                 caminho_arquivo = os.path.join(caminho_diretorio, nomeArquivo)
                 with open(caminho_arquivo, "r", encoding="utf-8") as arquivo:
                     dados = simplejson.load(arquivo, use_decimal=True)
@@ -97,26 +89,37 @@ def enviaMultiplosJsons(quantidadeArquivos):
             response.raise_for_status()
             Style.RESET_ALL
 
-            msg = f'Json de número {count} chavePacote = {chavePacote} enviado na data {getDataAtualString()} ''\''
+            msg = f'Json de número {count} chavePacote = {chavePacote} enviado na data {getDataAtualString()}'
             montarLogEnvioRemessa(msg, "")
             count += 1
-            
         except requests.exceptions.RequestException as e:
-            msg = f'Erro ao enviar parcial de número: {count}'
-            print(e)
-            montarLogEnvioRemessa(msg, e.request.json())
-            status_code = response.status_code
-            if (status_code == 401):
+            msg = f"Erro ao enviar parcial de número {count}"
+            error_content = ""
+
+            if e.response:
+                error_content = e.response.text
+                try:
+                    error_content = e.response.json()
+                except ValueError:
+                    pass
+
+            log_data = {
+                "mensagem": msg,
+                "erro": error_content,
+                "timestamp": datetime.now().strftime("%d/%m/%Y %H:%M:%S")
+            }
+            
+            with open('logEnvio.json', 'a') as log_file:
+                json.dump(log_data, log_file, ensure_ascii=False, indent=4)
+                log_file.write("\n")
+            
+            if e.response and e.response.status_code == 401:
                 continuaEnvioCasoErroToken(count, quantidadeArquivos)
-    
-    schedule.every(1).hours.do(chamarEsfinge)   
-    while True:
-        schedule.run_pending()
-        time.sleep(1)
-        
+            break
+
 def enviarParcial():
     umUnicoArquivo = int(input('Os JSON estão em vários arquivo ou em um único? Digite [1] para 1 único arquivo ou [2] para múltiplos arquivos: '))
-    if (umUnicoArquivo == 2):
+    if umUnicoArquivo == 2:
         print(Fore.YELLOW + 'Lembre-se: Renomeie os jsons de envios de 1 em diante')
         quantidadeArquivos = int(input('Quantidade de arquivos a serem enviados: '))
         Style.RESET_ALL
@@ -133,16 +136,15 @@ def enviarParcial():
 
 def continuaEnvioCasoErroToken(jsonNumero, quantidadeArquivos):
     while jsonNumero < int(quantidadeArquivos) + 1:
-        global count
         nomeArquivo = str(jsonNumero) + '.json'
         try:
-            url = urlBase + '/registroscontabeis/municipais/enviarParcial'
+            url = urlBase + '/registroscontabeis/empresas/enviarParcial'
 
             params = {
                 'chavePacote': chavePacote
             }
             try:
-                caminho_diretorio = os.path.join("C:", "arquivos",)
+                caminho_diretorio = os.path.join("C:", "arquivos")
                 caminho_arquivo = os.path.join(caminho_diretorio, nomeArquivo)
                 with open(caminho_arquivo, "r", encoding="utf-8") as arquivo:
                     dados = simplejson.load(arquivo, use_decimal=True)
@@ -153,24 +155,41 @@ def continuaEnvioCasoErroToken(jsonNumero, quantidadeArquivos):
             
             response = requests.post(url, headers=headers, params=params, json=dados)
             response.raise_for_status()
-            status_code = response.status_code
             Style.RESET_ALL
 
-            msg = f'Json de número {jsonNumero} chavePacote = {chavePacote} enviado na data {getDataAtualString()} ''\''
+            msg = f'Json de número {jsonNumero} chavePacote = {chavePacote} enviado na data {getDataAtualString()}'
             montarLogEnvioRemessa(msg, "")
             jsonNumero += 1
         except requests.exceptions.RequestException as e:
-            msg = f'Erro ao enviar parcial de número: {jsonNumero}'
-            montarLogEnvioRemessa(msg, e.request.json())
-            if (status_code == 401):
+            msg = f"Erro ao enviar parcial de número {jsonNumero}"
+            error_content = ""
+
+            if e.response:
+                error_content = e.response.text
+                try:
+                    error_content = e.response.json()
+                except ValueError:
+                    pass
+
+            log_data = {
+                "mensagem": msg,
+                "erro": error_content,
+                "timestamp": datetime.now().strftime("%d/%m/%Y %H:%M:%S")
+            }
+            
+            with open('logEnvio.json', 'a') as log_file:
+                json.dump(log_data, log_file, ensure_ascii=False, indent=4)
+                log_file.write("\n")
+
+            if e.response and e.response.status_code == 401:
                 continuaEnvioCasoErroToken(jsonNumero, quantidadeArquivos)
             break
 
 chavePacote = obterChavePacote()['chavePacote']
 quantidadeArquivos = enviarParcial()
-if (input("Deseja chamar a finaliza? [1] Sim | [2] Não: ") == "1"):
+if input("Deseja chamar a finaliza? [1] Sim | [2] Não: ") == "1":
     try:
-        url = urlBase + '/registroscontabeis/municipais/finalizarEnvio'
+        url = urlBase + '/registroscontabeis/empresas/finalizarEnvio'
 
         montaTotalizadorRCM(quantidadeArquivos)
 
@@ -184,5 +203,22 @@ if (input("Deseja chamar a finaliza? [1] Sim | [2] Não: ") == "1"):
 
         resposta = response.json()
     except requests.exceptions.RequestException as e:
-        msg = "Erro ao finalizar o pacote: "
-        montarLogEnvioRemessa(msg, e.request.json())
+        msg = "Erro ao finalizar o pacote"
+        error_content = ""
+
+        if e.response:
+            error_content = e.response.text
+            try:
+                error_content = e.response.json()
+            except ValueError:
+                pass
+
+        log_data = {
+            "mensagem": msg,
+            "erro": error_content,
+            "timestamp": datetime.now().strftime("%d/%m/%Y %H:%M:%S")
+        }
+        
+        with open('logEnvio.json', 'a') as log_file:
+            json.dump(log_data, log_file, ensure_ascii=False, indent=4)
+            log_file.write("\n")

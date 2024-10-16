@@ -17,8 +17,8 @@ def autenticar(codigoAcesso, codigoUg):
     }
     params = {
         'codigoUg': codigoUg,
-        'descricaoEmpresaTI': 'teste',
-        'descritivoSoftware': 'teste'
+        'descricaoEmpresaTI': 'TESTE DTI',
+        'descritivoSoftware': 'TESTE DTI'
     }
 
     try:

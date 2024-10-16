@@ -7,9 +7,8 @@ diretorio_arquivos = 'testes/arquivos/'
 #Converte um único arquivo txt em múltiplos JSONs
 def converterTxtToJson(arquivo_txt):
     objetos_json = []
-    caminho_diretorio = os.path.join("C:", "arquivos")
-    caminho_arquivo = os.path.join(caminho_diretorio, arquivo_txt)
-    with open(caminho_arquivo, 'r', encoding='utf-8') as arquivo:
+
+    with open(arquivo_txt, 'r', encoding='utf-8') as arquivo:
         linhas = arquivo.readlines()
         for linha in linhas:
             linha = linha.strip()
@@ -50,5 +49,3 @@ def serialize_decimal(obj):
     if isinstance(obj, Decimal):
         return str(obj)
     raise TypeError("Tipo não serializável")
-
-converterTxtToJson('asd.txt')
