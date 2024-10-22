@@ -28,7 +28,7 @@ def obterChavePacote():
     anoMes = input("anoMes: ")
     def pegarChave(anoMes):
         try:
-            url = urlBase + '/registroscontabeis/empresas/iniciarEnvio'
+            url = urlBase + '/v5/registroscontabeis/empresas/iniciarEnvio'
             params = {
                 'anoMes': anoMes
             }
@@ -70,7 +70,7 @@ def enviaMultiplosJsons(quantidadeArquivos):
     while count < int(quantidadeArquivos) + 1:
         nomeArquivo = str(count) + '.json'
         try:
-            url = urlBase + '/registroscontabeis/empresas/enviarParcial'
+            url = urlBase + '/v5/registroscontabeis/empresas/enviarParcialLote'
 
             params = {
                 'chavePacote': chavePacote
@@ -138,7 +138,7 @@ def continuaEnvioCasoErroToken(jsonNumero, quantidadeArquivos):
     while jsonNumero < int(quantidadeArquivos) + 1:
         nomeArquivo = str(jsonNumero) + '.json'
         try:
-            url = urlBase + '/registroscontabeis/empresas/enviarParcial'
+            url = urlBase + '/v5/registroscontabeis/empresas/enviarParcialLote'
 
             params = {
                 'chavePacote': chavePacote
@@ -189,7 +189,7 @@ chavePacote = obterChavePacote()['chavePacote']
 quantidadeArquivos = enviarParcial()
 if input("Deseja chamar a finaliza? [1] Sim | [2] Não: ") == "1":
     try:
-        url = urlBase + '/registroscontabeis/empresas/finalizarEnvio'
+        url = urlBase + '/v5/registroscontabeis/empresas/finalizarEnvio'
 
         montaTotalizadorRCM(quantidadeArquivos)
 
