@@ -18,7 +18,7 @@ def generate_objects():
         data = {
             "anoCriacao": "2022",
             "codigoContaContabil": "1127125001",
-            "dataLancamento": "2023-09-01",
+            "dataLancamento": "2023-08-01",
             "historicoLancamento": "TESTE DTI",
             "numeroSequencial": "1",
             "numeroSlip": f"{i+1}",
