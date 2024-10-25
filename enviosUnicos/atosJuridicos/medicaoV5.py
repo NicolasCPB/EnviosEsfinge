@@ -19,11 +19,18 @@ headers = config_data['headers']
 
 def enviar():
     try:
+        subpasta = os.path.join(diretorio_atual, "arquivos")
+        if not os.path.exists(subpasta):
+            os.makedirs(subpasta)
+            print(Fore.YELLOW + f"A subpasta '{subpasta}' foi criada.")
+            Style.RESET_ALL
+        
         nomeArquivo = str(input("Qual o nome do arquivo? ")) + ".json"
         url = urlBase + '/v5/atosjuridicos/medicaoContrato/enviar'
+        
+        caminho_arquivo = os.path.join(subpasta, nomeArquivo)
+        
         try:
-            caminho_diretorio = os.path.join("C:", "arquivos",)
-            caminho_arquivo = os.path.join(caminho_diretorio, nomeArquivo)
             with open(caminho_arquivo, "r", encoding="utf-8") as arquivo:
                 dados = simplejson.load(arquivo, use_decimal=True)
         except UnicodeDecodeError as e:
@@ -35,13 +42,12 @@ def enviar():
         response.raise_for_status()
 
         resposta = response.json()
-        print (Fore.GREEN + f'Envio realizado com sucesso: {resposta}')
+        print(Fore.GREEN + f'Envio realizado com sucesso: {resposta}')
         Style.RESET_ALL
     except requests.exceptions.RequestException as e:
         print(Fore.RED + "Erro ao enviar. Foi criado um arquivo com o Json resposta de retorno.")
         Style.RESET_ALL
         with open("retornoEnvioUnico.json", 'w', encoding="utf-8") as json_file:
             simplejson.dump(e.response.json(), json_file, indent=2)
-    
 
 enviar()
