@@ -1,0 +1,118 @@
+[
+    {
+        "parametroNome": "identificador_tipo_pessoa",
+        "valor": "1"
+    },
+    {
+        "parametroNome": "ANO",
+        "valor": "2024"
+    },
+    {
+        "parametroNome": "ANO_MES",
+        "valor": "202401"
+    },
+    {
+        "parametroNome": "IDENTIFICADOR_TIPOPERIODO",
+        "valor": "12"
+    },
+    {
+        "parametroNome": "NUMERO_TIPOPERIODO",
+        "valor": "2"
+    },
+    {
+        "parametroNome": "DATA_FIM",
+        "valor": "2024-06-30"
+    },
+    {
+        "parametroNome": "DATA_INICIO",
+        "valor": "2024-06-06"
+    },
+    {
+        "parametroNome": "COMPETENCIA_INICIO",
+        "valor": "202401"
+    },
+    {
+        "parametroNome": "tipo_operacao_credito_trib",
+        "valor": "1,2"
+    },
+    {
+        "parametroNome": "COMPETENCIA_FIM",
+        "valor": "202404"
+    },
+    {
+        "parametroNome": "tipo_credito_trib",
+        "valor": "1,2"
+    },
+    {
+        "parametroNome": "saldos_cred_tributario",
+        "valor": "1,2"
+    },
+    {
+        "parametroNome": "ano_opcao_todos",
+        "valor": "2024,2023"
+    },
+    {
+        "parametroNome": "IDENTIFICADOR_UNIDADE_GESTORA",
+        "valor": "11940"
+    },
+    {
+        "parametroNome": "ANO_MES_FIM",
+        "valor": "202410"
+    },
+    {
+        "parametroNome": "ANO_MES_INICIO",
+        "valor": "202401"
+    },
+    {
+        "parametroNome": "entes_SGI_Usuario",
+        "valor": "1"
+    },
+    {
+        "parametroNome": "unidade_gestora_SGI_usuario",
+        "valor": "1"
+    },
+    {
+        "parametroNome": "IDENTIFICADORSGI_USUARIO",
+        "valor": "1"
+    },
+    {
+        "parametroNome": "IDENTIFICADOR_PODERORGAO",
+        "valor": "1"
+    },
+    {
+        "parametroNome": "tipoPoderOrgaoTodos",
+        "valor": "1"
+    },
+    {
+        "parametroNome": "tipo_tributo",
+        "valor": "1"
+    },
+    {
+        "parametroNome": "codigo_tipo_texto_juridico",
+        "valor": "12"
+    },
+    {
+        "parametroNome": "codigo_tipo_parecer_controle_interno",
+        "valor": "12"
+    },
+    {
+        "parametroNome": "codigo_conta_contabil",
+        "valor": "1"
+    },
+    {
+        "parametroNome": "saldo_conta_corrente",
+        "valor": "1"
+    },
+    {
+        "parametroNome": "comunicacoes_prazo",
+        "valor": "1"
+    },
+    {
+        "parametroNome": "informacao_fase_ratificacao",
+        "valor": "1"
+    },
+    {
+        "parametroNome": "VALOR",
+        "valor": "1"
+    }
+]
