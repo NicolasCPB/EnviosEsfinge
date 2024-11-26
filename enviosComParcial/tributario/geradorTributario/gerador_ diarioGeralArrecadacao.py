@@ -11,14 +11,16 @@ def generate_objects():
     diarioGeralArrecadacao = []
     for i in range(num_objects):
         data =  {
-          "anoCodigoSequencialOperacaoArrecadacao": 2024,
-          "anoLancamentoCreditoTributario": 2024,
-          "codigoEspecificacaoReceita": 16999902,
-          "codigoLancamentoCreditoTributario": f"Teste1.{i+1}",
-          "codigoSequencialOperacaoArrecadacao": f"Teste1.{i+1}",
-          "dataOperacao": "2024-01-04",
-          "tipoArrecadacao": 1,
-          "valorCreditoTributario": 1009.79
+        "anoCodigoSequencialOperacaoArrecadacao": 2024,
+        "anoLancamentoCreditoTributario": 2024,
+        "codigoEspecificacaoReceita": 16999902,
+        "codigoLancamentoCreditoTributario": f"Teste1.{i+1}",
+        "codigoSequencialOperacaoArrecadacao": f"Teste1.{i+1}",
+        "dataOperacao": "2024-11-01",
+        "numeroAnoTipoCobranca": 11111,
+        "numeroParcelas": 1,
+        "tipoArrecadacao": 1,
+        "valorCreditoTributario": 1009.79
         }
        
         diarioGeralArrecadacao.append(data)

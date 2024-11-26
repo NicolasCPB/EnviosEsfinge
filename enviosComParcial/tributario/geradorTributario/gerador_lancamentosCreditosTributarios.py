@@ -16,11 +16,14 @@ def generate_objects():
         "anoMesCompetencia": 202401,
         "codigoLancamentoCreditoTributario": f"Teste1.{i+1}",
         "codigoLancamentoCreditoTributarioOriginal": "",
-        "dataLancamento": "2024-01-01",
+        "dataLancamento": "2024-11-01",
+        "dataVencimento": "2024-11-01",
+        "detalhamentoTipoCredito": 123456,
+        "numeroCpfResponsavelOperacao": 12345678901,
         "numeroInscricaoImobiliaria": f"Teste1.{i+1}",
         "numeroMatriculaContribuinte": f"Teste1.{i+1}",
         "tipoCredito": 1,
-        "tipoOperacao": 1,
+        "tipoOperacao": 3,
         "valorLancamentoCreditoTributario": 1009.79
       }
         lancamentosCreditosTributarios.append(data)

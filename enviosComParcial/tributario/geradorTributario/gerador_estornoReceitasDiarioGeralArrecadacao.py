@@ -14,7 +14,7 @@ def generate_objects():
           "anoCodigoSequencialOperacaoArrecadacao": 2024,
           "codigoSequencialEstorno": f"{i+1}",
           "codigoSequencialOperacaoArrecadacao": f"Teste1.{i+1}",
-          "dataEstorno": "2024-01-05",
+          "dataEstorno": "2024-11-01",
           "indicativoEstornoReceita": "s",
           "motivoEstorno": 123456,
           "valorEstorno": 1009.79

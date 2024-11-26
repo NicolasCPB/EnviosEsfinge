@@ -12,11 +12,14 @@ def generate_objects():
     for i in range(num_objects):
         data =  {
           "anoLancamentoCreditoTributario": 2024,
+          "anoLancamentoCreditoTributarioDividaAtiva": 2022,
           "codigoLancamentoCreditoTributario": f"Teste1.{i+1}",
+          "codigoLancamentoCreditoTributarioDividaAtiva": f"Teste1.{i+1}",
           "codigoSequencialOperacaoBaixa": f"{i+1}",
-          "dataBaixa": "2024-01-03",
+          "dataBaixa": "2024-11-01",
           "indicativoEstornoBaixa": "s",
           "motivoBaixa": 123456,
+          "numeroCpfResponsavelOperacao": 12345678901,
           "tipoBaixa": 1,
           "valorOperacaoBaixa": 1009.79
         }
