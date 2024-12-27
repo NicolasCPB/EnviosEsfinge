@@ -8,27 +8,18 @@ def generate_objects():
     initial_value = float(entry_initial_value.get())
     directory = filedialog.askdirectory()
     
-    lancamentosCreditosTributarios = []
+    cadastrosPropriedadesImobiliarias = []
     for i in range(num_objects):
-        data =  {
-        "anoLancamentoCreditoTributario": 2024,
-        "anoLancamentoCreditoTributarioOriginal": 2024,
-        "anoMesCompetencia": 202401,
-        "codigoLancamentoCreditoTributario": f"Teste1.{i+1}",
-        "codigoLancamentoCreditoTributarioOriginal": "",
-        "dataLancamento": "2024-11-01",
-        "dataVencimento": "2024-11-01",
-        "detalhamentoTipoCredito": 123456,
-        "numeroCpfResponsavelOperacao": 12345678901,
-        "numeroInscricaoImobiliaria": f"Teste1.{i+1}",
-        "numeroMatriculaContribuinte": f"Teste1.{i+1}",
-        "tipoCredito": 1,
-        "tipoOperacao": 3,
-        "valorLancamentoCreditoTributario": 1009.79
+        data = {
+        "dataAlteracaoTitularidade": "2024-11-01",
+        "numeroInscricaoImobiliaria":  f"Teste.{i+1}",
+        "numeroMatriculaContribuinte":  f"Teste.{i+1}",
+        "tipoCondicaoImovelProprietario": 1
       }
-        lancamentosCreditosTributarios.append(data)
-    
-    file_path = os.path.join(directory, "lancamentosCreditosTributarios.json")
+        
+        cadastrosPropriedadesImobiliarias.append(data)
+  
+    file_path = os.path.join(directory, "cadastrosPropriedadesImobiliarias.json")
     if os.path.exists(file_path):
         base, extension = os.path.splitext(file_path)
         i = 1
@@ -37,9 +28,10 @@ def generate_objects():
         file_path = f"{base}_{i}{extension}"
     
     with open(file_path, 'w') as f:
-        json.dump({"lancamentosCreditosTributarios": lancamentosCreditosTributarios}, f, indent=4)
+        json.dump({"cadastrosPropriedadesImobiliarias": cadastrosPropriedadesImobiliarias}, f, indent=4)
     
     print("Arquivo salvo com sucesso!")
+
 
 root = tk.Tk()
 root.title("Gerador de Objetos Imobiliários")

@@ -12,12 +12,12 @@ def generate_objects():
     for i in range(num_objects):
         data =  {
         "anoLancamentoCreditoTributario": 2024,
-        "codigoLancamentoCreditoTributario": f"Teste1.{i+1}",
+        "codigoLancamentoCreditoTributario": f"Teste.{i+1}",
         "codigoSequencialRevisao": f"{i+1}",
         "dataRevisao": "2024-11-01",
         "indicativoReducaoLancamentoCreditoTributario": "s",
         "motivoRevisao": 123456,
-        "numeroCpfResponsavelOperacao": 12345678901,
+        "numeroCpfResponsavelOperacao": 57579474972,
         "tipoRevisaoLancamentos": 1,
         "valorOperacaoRevisao": 1009.79
       }

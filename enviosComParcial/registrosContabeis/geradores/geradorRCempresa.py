@@ -2,14 +2,9 @@ import json
 import os
 
 def generate_objects():
-    # Solicita a quantidade total de objetos
     num_objects = int(input("Digite a quantidade total de objetos que deseja gerar: "))
-    
-    # Define o diretório para salvar os arquivos
     directory = input("Digite o caminho do diretório onde deseja salvar os arquivos JSON: ")
     os.makedirs(directory, exist_ok=True)
-    
-    # Calcula a quantidade de objetos por arquivo
     objects_per_file = num_objects // 50
     remaining_objects = num_objects % 50
 

@@ -8,18 +8,25 @@ def generate_objects():
     initial_value = float(entry_initial_value.get())
     directory = filedialog.askdirectory()
     
-    cadastrosPropriedadesImobiliarias = []
+    diarioGeralArrecadacao = []
     for i in range(num_objects):
-        data = {
-        "dataAlteracaoTitularidade": "2024-11-01",
-        "numeroInscricaoImobiliaria":  f"Teste1.{i+1}",
-        "numeroMatriculaContribuinte":  f"Teste1.{i+1}",
-        "tipoCondicaoImovelProprietario": 1
-      }
-        
-        cadastrosPropriedadesImobiliarias.append(data)
-  
-    file_path = os.path.join(directory, "cadastrosPropriedadesImobiliarias.json")
+        data =  {
+        "anoCodigoSequencialOperacaoArrecadacao": 2024,
+        "anoLancamentoCreditoTributario": 2024,
+        "codigoEspecificacaoReceita": 16999902,
+        "codigoLancamentoCreditoTributario": f"Teste.{i+1}",
+        "codigoSequencialOperacaoArrecadacao": f"Teste.{i+1}",
+        "dataOperacao": "2024-05-01",
+        "numeroAnoTipoCobranca": 11111,
+        "numeroParcelas": 1,
+        "tipoArrecadacao": 1,
+        "valorCreditoTributario": 1009.79
+        }
+       
+        diarioGeralArrecadacao.append(data)
+    
+    
+    file_path = os.path.join(directory, "diarioGeralArrecadacao.json")
     if os.path.exists(file_path):
         base, extension = os.path.splitext(file_path)
         i = 1
@@ -28,7 +35,7 @@ def generate_objects():
         file_path = f"{base}_{i}{extension}"
     
     with open(file_path, 'w') as f:
-        json.dump({"cadastrosPropriedadesImobiliarias": cadastrosPropriedadesImobiliarias}, f, indent=4)
+        json.dump({"diarioGeralArrecadacao": diarioGeralArrecadacao}, f, indent=4)
     
     print("Arquivo salvo com sucesso!")
 

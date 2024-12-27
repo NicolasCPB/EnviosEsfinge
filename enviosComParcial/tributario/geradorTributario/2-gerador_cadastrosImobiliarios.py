@@ -8,24 +8,30 @@ def generate_objects():
     initial_value = float(entry_initial_value.get())
     directory = filedialog.askdirectory()
     
-    cobrancaDividaAtiva = []
+    cadastros_imobiliarios = []
     for i in range(num_objects):
-        data =  {
-    "anoLancamentoCreditoTributarioOuNumeroInscricaoDividaAtiva": 2024,
-      "codigoLancamentoCreditoTributarioOuNumeroInscricaoDividaAtiva": f"Teste1.{i+1}",
-      "dataCobranca": "2024-11-01",
-      "dataInicioPrazoPrescricional": "2024-11-01",
-      "legislacaoParcelamento": 11111,
-      "numeroAnoTipoCobranca": 11111,
-      "numeroParcelas": 1,
-      "tipoCobranca": 1,
-      "tipoParcelamento": 1
-      }
-       
-        cobrancaDividaAtiva.append(data)
+        data = {
+            "areaEdificadaImovel": 1009.79,
+            "areaTerritorialToal": 1009.79,
+            "bairroImovel": "Exemplo",
+            "cepImovel": 1,
+            "complementoEnderecoImovel": "Exemplo",
+            "dataAtualizacaoCadastral": "2024-05-01",
+            "descricaoLogradouroImovel": "José Silva",
+            "fracaoIdeal": 1009.79,
+            "frequenciaColetaLixoDomiciliar": 1,
+            "frequenciaColetaSeletivaDomiciliar": 1,
+            "numeroImovel": 70,
+            "numeroInscricaoImobiliariaNovo": "",
+            "numeroInscricaoImobiliaria": f"Teste.{i+1}",
+            "tipoImovel": 1,
+            "tipoUtilizacaoImovel": 1,
+            "valorVenalImovel": 1009.79
+        }
+        cadastros_imobiliarios.append(data)
     
     
-    file_path = os.path.join(directory, "cobrancaDividaAtiva.json")
+    file_path = os.path.join(directory, "cadastrosImobiliarios.json")
     if os.path.exists(file_path):
         base, extension = os.path.splitext(file_path)
         i = 1
@@ -34,9 +40,10 @@ def generate_objects():
         file_path = f"{base}_{i}{extension}"
     
     with open(file_path, 'w') as f:
-        json.dump({"cobrancaDividaAtiva": cobrancaDividaAtiva}, f, indent=4)
+        json.dump({"cadastrosImobiliarios": cadastros_imobiliarios}, f, indent=4)
     
     print("Arquivo salvo com sucesso!")
+
 
 root = tk.Tk()
 root.title("Gerador de Objetos Imobiliários")

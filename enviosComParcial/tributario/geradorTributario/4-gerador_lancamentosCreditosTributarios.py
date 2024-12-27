@@ -8,30 +8,27 @@ def generate_objects():
     initial_value = float(entry_initial_value.get())
     directory = filedialog.askdirectory()
     
-    cadastros_imobiliarios = []
+    lancamentosCreditosTributarios = []
     for i in range(num_objects):
-        data = {
-            "areaEdificadaImovel": 1009.79,
-            "areaTerritorialToal": 1009.79,
-            "bairroImovel": "Exemplo",
-            "cepImovel": 1,
-            "complementoEnderecoImovel": "Exemplo",
-            "dataAtualizacaoCadastral": "2024-11-01",
-            "descricaoLogradouroImovel": "José Silva",
-            "fracaoIdeal": 1009.79,
-            "frequenciaColetaLixoDomiciliar": 1,
-            "frequenciaColetaSeletivaDomiciliar": 1,
-            "numeroImovel": 70,
-            "numeroInscricaoImobiliariaNovo": "",
-            "numeroInscricaoImobiliaria": f"Teste1.{i+1}",
-            "tipoImovel": 1,
-            "tipoUtilizacaoImovel": 1,
-            "valorVenalImovel": 1009.79
-        }
-        cadastros_imobiliarios.append(data)
+        data =  {
+        "anoLancamentoCreditoTributario": 2024,
+        "anoLancamentoCreditoTributarioOriginal": 2024,
+        "anoMesCompetencia": 202405,
+        "codigoLancamentoCreditoTributario": f"Teste.{i+1}",
+        "codigoLancamentoCreditoTributarioOriginal": "",
+        "dataLancamento": "2024-05-01",
+        "dataVencimento": "2024-05-01",
+        "detalhamentoTipoCredito": 123456,
+        "numeroCpfResponsavelOperacao": 57579474972,
+        "numeroInscricaoImobiliaria": f"Teste.{i+1}",
+        "numeroMatriculaContribuinte": f"Teste.{i+1}",
+        "tipoCredito": 1,
+        "tipoOperacao": 3,
+        "valorLancamentoCreditoTributario": 1009.79
+      }
+        lancamentosCreditosTributarios.append(data)
     
-    
-    file_path = os.path.join(directory, "cadastrosImobiliarios.json")
+    file_path = os.path.join(directory, "lancamentosCreditosTributarios.json")
     if os.path.exists(file_path):
         base, extension = os.path.splitext(file_path)
         i = 1
@@ -40,10 +37,9 @@ def generate_objects():
         file_path = f"{base}_{i}{extension}"
     
     with open(file_path, 'w') as f:
-        json.dump({"cadastrosImobiliarios": cadastros_imobiliarios}, f, indent=4)
+        json.dump({"lancamentosCreditosTributarios": lancamentosCreditosTributarios}, f, indent=4)
     
     print("Arquivo salvo com sucesso!")
-
 
 root = tk.Tk()
 root.title("Gerador de Objetos Imobiliários")

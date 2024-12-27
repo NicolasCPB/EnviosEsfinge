@@ -14,15 +14,15 @@ def generate_objects():
     EncerramentoContaBancaria = []
     for i in range(num_objects):
         data = {
-            "codigoAgencia": "34645",
-            "codigoBanco": "2345",
-            "codigoConta": f"3463{i+1}",
-            "codigoIBGECidadeAgenciaBancaria": "45678",
+            "codigoAgencia": "5433",
+            "codigoBanco": "1",
+            "codigoConta": f"28714{i+1}",
+            "codigoIBGECidadeAgenciaBancaria": "4200051",
             "digitoVerificadorAgenciaBancaria": 1,
             "digitoVerificadorContaBancaria": 1,
             "dataAtivacaoContaBancaria": "2024-09-01",
             "nomeConta": f"Teste DTI{i+1}",
-            "numeroCNPJTitulaContaBancaria": "02839560976",
+            "numeroCNPJTitulaContaBancaria": "78511052000110",
             "tipoConta": "1"
         }
         

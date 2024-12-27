@@ -16,14 +16,14 @@ def generate_objects():
         data = {
             "codigoAgencia": "5433",
             "codigoBanco": "1",
-            "codigoConta": f"28314{i+1}",
+            "codigoConta": f"28714{i+1}",
             "codigoIBGECidadeAgenciaBancaria": "4200051",
             "digitoVerificadorAgenciaBancaria": 1,
             "digitoVerificadorContaBancaria": 1,
-            "dataAtivacaoContaBancaria": "2024-09-01",
+            "dataAtivacaoContaBancaria": "2024-11-01",
             "nomeConta": f"Teste DTI{i+1}",
             "numeroCNPJTitulaContaBancaria": "78511052000110",
-            "tipoConta": "1"
+            "tipoConta": "14"
         }
         
         contasBancarias.append(data)

@@ -8,22 +8,22 @@ def generate_objects():
     initial_value = float(entry_initial_value.get())
     directory = filedialog.askdirectory()
     
-    estornoReceitasDiarioGeralArrecadacao = []
+    situacaoTipocobrancaDividaAtiva = []
     for i in range(num_objects):
         data =  {
-          "anoCodigoSequencialOperacaoArrecadacao": 2024,
-          "codigoSequencialEstorno": f"{i+1}",
-          "codigoSequencialOperacaoArrecadacao": f"Teste1.{i+1}",
-          "dataEstorno": "2024-11-01",
-          "indicativoEstornoReceita": "s",
-          "motivoEstorno": 123456,
-          "valorEstorno": 1009.79
-        }
+    "anoLancamentoCreditoTributarioOuNumeroInscricaoDividaAtiva": 2024,
+      "codigoLancamentoCreditoTributarioOuNumeroInscricaoDividaAtiva": f"Teste.{i+1}",
+      "dataAtualizacaoSituacao": "2024-11-01",
+      "descricaoSituacao": 11111,
+      "numeroAnoTipoCobrancaDividaAtiva": 11111,
+      "numeroProtestoExtrajudicialOuExecucaoFiscal": 11111,
+      "tipoSituacaoCobrancaDividaAtiva": 5
+      }
        
-        estornoReceitasDiarioGeralArrecadacao.append(data)
+        situacaoTipocobrancaDividaAtiva.append(data)
     
-   
-    file_path = os.path.join(directory, "estornoReceitasDiarioGeralArrecadacao.json")
+    
+    file_path = os.path.join(directory, "situacaoTipocobrancaDividaAtiva.json")
     if os.path.exists(file_path):
         base, extension = os.path.splitext(file_path)
         i = 1
@@ -32,10 +32,9 @@ def generate_objects():
         file_path = f"{base}_{i}{extension}"
     
     with open(file_path, 'w') as f:
-        json.dump({"estornoReceitasDiarioGeralArrecadacao": estornoReceitasDiarioGeralArrecadacao}, f, indent=4)
+        json.dump({"situacaoTipocobrancaDividaAtiva": situacaoTipocobrancaDividaAtiva}, f, indent=4)
     
     print("Arquivo salvo com sucesso!")
-
 
 root = tk.Tk()
 root.title("Gerador de Objetos Imobiliários")
