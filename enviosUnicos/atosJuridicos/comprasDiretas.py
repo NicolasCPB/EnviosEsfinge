@@ -20,7 +20,7 @@ headers = config_data['headers']
 def enviar():
     try:
         nomeArquivo = str(input("Qual o nome do arquivo? ")) + ".json"
-        url = urlBase + '/atosjuridicos/comprasDiretasDispensaInexibilidadeLicitacao/enviar'
+        url = urlBase + '/v5/atosjuridicos/comprasDiretasDispensaInexibilidadeLicitacao/enviar'
         try:
             caminho_diretorio = os.path.join("C:", "arquivos",)
             caminho_arquivo = os.path.join(caminho_diretorio, nomeArquivo)

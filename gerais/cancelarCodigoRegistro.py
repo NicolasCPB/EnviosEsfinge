@@ -41,4 +41,5 @@ def selecionar_arquivo():
         print(f'Status Code: {status_code}')
 
 if __name__ == "__main__":
-    selecionar_arquivo()
+    cancelar_codigos_de_registro([''])
+    #selecionar_arquivo()
