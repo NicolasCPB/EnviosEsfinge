@@ -26,7 +26,7 @@ def enviar():
             Style.RESET_ALL
         
         nomeArquivo = str(input("Qual o nome do arquivo? ")) + ".json"
-        url = urlBase + '/atosjuridicos/prepublicacao/v2/enviar'
+        url = urlBase + '/v5/atosjuridicos/situacaocontrato/enviar'
         
         caminho_arquivo = os.path.join(subpasta, nomeArquivo)
         

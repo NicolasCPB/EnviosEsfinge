@@ -1,0 +1,24 @@
+{
+    "atualizacaoCargoDTO": [
+      {
+        "codigoCBO": "333115",
+        "codigoCargo": "5198",
+        "codigoTipoCargoAcumulacao": 4,
+        "dataFimVigenciaCargo": null,
+        "dataInicioVigenciaCargo": "2024-01-20",
+        "nomeCargo": "PROFISSIONAIS EM PESQUISA",
+        "quantidadeCargaHoraria": "02000",
+        "tipoAtualizacao": 2,
+        "tipoCargaHoraria": 1,
+        "tipoCargo": 1,
+        "tipoEscolaridade": 1,
+        "tipoQuadro": 1
+      }
+    ],
+    "numeroTextoJuridico": "9/99",
+    "quantidadeCargosAtualizados": 1,
+    "quantidadeCargosCriados": 0,
+    "quantidadeCargosExtintos": 0,
+    "quantidadeRegistros": 1,
+    "tipoTextoJuridico": 8
+  }

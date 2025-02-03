@@ -27,7 +27,7 @@ def multiplicar_objeto_json(objeto_json, quantidade):
     cpfs_gerados = set()
     for i in range(1, quantidade + 1):
         novo_objeto = objeto_json.copy()
-        novo_objeto["numeroMatriculaContribuinte"] = f"Teste1.{i}"
+        novo_objeto["numeroMatriculaContribuinte"] = f"Teste.{i}"
         novo_objeto["numeroDocumentoContribuinte"] = gerar_cpf_unico(cpfs_gerados)
         cpfs_gerados.add(novo_objeto["numeroDocumentoContribuinte"])
         objetos_multiplicados.append(novo_objeto)
@@ -58,13 +58,16 @@ diretorio = selecionar_diretorio()
 
 # Objeto Modelo - alterar conforme a necessidade
 objeto_json_original = {
-    "dataAtualizacaoCadastral": "2024-01-01",
+    "dataAtualizacaoCadastral": "2024-05-01",
     "indicativoCadastroAtivo": "S",
     "nomeCompletoContribuinte": "OSVALDO CECILIO",
     "numeroDocumentoContribuinte": "",
-    "numeroMatriculaContribuinte": "Teste1.1001",
+    "numeroMatriculaContribuinte": "",
     "numeroMatriculaContribuinteNovo": "",
-    "tipoContribuinte": 1
+    "tipoContribuinte": 1,
+    "indicativoEspolio": "N",
+    "nomeRepresentante": "FULANSD",
+    "tipoRepresentante": 1
 }
 
 objetos_multiplicados = multiplicar_objeto_json(objeto_json_original, quantidade) # Multiplicar o objeto JSON
