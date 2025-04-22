@@ -110,12 +110,18 @@ def enviarParcial():
         return quantidadeArquivos
     #1 único arquivo | 1 JSON por linha
     else:
-        print(Fore.YELLOW + 'Lembre-se: Renomeie o arquivo para extensão .txt')
-        Style.RESET_ALL
-        nomeArquivo = input("Qual o nome do arquivo? ")
-        converterTxtToJson(nomeArquivo + ".txt")
-        quantidadeArquivos = input("Qual a quantidade de Jsons que foram gerados? ")
-        enviaMultiplosJsons(quantidadeArquivos)
+        converter = int(input('Precisa converter o arquivo de TXT para JSON? [1] Sim | [2] Não: '))
+        if (converter == 1):
+            print(Fore.YELLOW + 'Lembre-se: Renomeie o arquivo para extensão .txt')
+            Style.RESET_ALL
+            nomeArquivo = input("Qual o nome do arquivo? ")
+            converterTxtToJson(nomeArquivo + ".txt")
+            quantidadeArquivos = input("Qual a quantidade de Jsons que foram gerados? ")
+            enviaMultiplosJsons(quantidadeArquivos)
+        else: 
+            print(Fore.YELLOW + 'Lembre-se: Renomeie o arquivo para 1.json')
+            enviaMultiplosJsons(1)
+            quantidadeArquivos = 1
         return quantidadeArquivos
 
 def continuaEnvioCasoErroToken(jsonNumero, quantidadeArquivos):
@@ -171,4 +177,5 @@ if (input("Deseja chamar a finaliza? [1] Sim | [2] Não: ") == "1"):
             resposta = response.json()
         except requests.exceptions.RequestException as e:
             msg = "Erro ao finalizar o pacote: "
+            print(e)
             montarLogEnvioRemessa(msg, e.request.json())

@@ -24,54 +24,56 @@ def montaTotalizadorRCM(quantidadeArquivos):
         except json.JSONDecodeError as e:
             print(f"Erro de decodificação JSON: {e}")
 
-        try:
-            quantidadeAplicacaoFinanceiraPU += len(dados['aplicacoesFinanceiras'])
-        except:
-            count+=1
-            continue
+        for dado in dados:
+            try:
+                quantidadeAplicacaoFinanceiraPU += len(dado['aplicacoesFinanceiras'])
+            except:
+                count+=1
+                continue
 
-        try:
-            quantidadeConciliacaoBancaria += len(dados['conciliacoesBancarias'])
-        except:
-            count+=1
-            continue
+            try:
+                quantidadeConciliacaoBancaria += len(dado['conciliacoesBancarias'])
+            except:
+                count+=1
+                continue
 
-        try:
-            quantidadeContaBancaria += len(dados['contasBancarias'])
-        except:
-            count+=1
-            continue
+            try:
+                quantidadeContaBancaria += len(dado['contasBancarias'])
+            except:
+                count+=1
+                continue
 
-        try:
-            quantidadeDivida += len(dados['dividas'])
-        except:
-            count+=1
-            continue
+            try:
+                quantidadeDivida += len(dado['dividas'])
+            except:
+                count+=1
+                continue
 
-        try:
-            contador = 0
-            while contador < len(dados['dividas']):
-                quantidadeDocumentoDivida += len(dados['dividas'][contador]['documentos'])
-                contador += 1
-        except:
-            count+=1
-            continue
+            try:
+                contador = 0
+                while contador < len(dado['dividas']):
+                    quantidadeDocumentoDivida += len(dado['dividas'][contador]['documentos'])
+                    contador += 1
+            except:
+                count+=1
+                continue
 
-        try:
-            quantidadeLancamentoContabilPU += len(dados['lancamentosContabeis'])
-        except:
-            count+=1
-            continue
+            try:
+                quantidadeLancamentoContabilPU += len(dado['lancamentosContabeis'])
+            except:
+                count+=1
+                continue
 
-        try:
-            quantidadeSaldosBancarios += len(dados['saldosBancarios'])
-        except:
-            count+=1
-            continue
+            try:
+                quantidadeSaldosBancarios += len(dado['saldosBancarios'])
+            except:
+                count+=1
+                continue
 
-        count+=1
+            count+=1
 
     finalizaJson = {
+        "chavePacote": getChavePacote(),
         "quantidadeAplicacaoFinanceiraPU": quantidadeAplicacaoFinanceiraPU,
         "quantidadeConciliacaoBancaria": quantidadeConciliacaoBancaria,
         "quantidadeContaBancaria": quantidadeContaBancaria,
@@ -159,6 +161,7 @@ def montaTotalizadorTributario(quantidadeArquivos):
         count+=1
 
     finalizaJson = {
+        "chavePacote": getChavePacote(),
         "quantidadeBaixaCreditosTributarios": quantidadeBaixaCreditosTributarios,
         "quantidadeCadastroContribuinte": quantidadeCadastroContribuinte,
         "quantidadeCadastroImobiliario": quantidadeCadastroImobiliario,
@@ -172,3 +175,7 @@ def montaTotalizadorTributario(quantidadeArquivos):
     with open("finalizaJson.json", 'w') as json_file:
         simplejson.dump(finalizaJson, json_file, indent=2)
 
+def getChavePacote():
+    with open('config.json', 'r') as file:
+        config_data = json.load(file)
+    return config_data['chavePacote']

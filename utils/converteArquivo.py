@@ -2,13 +2,13 @@ import simplejson
 import os
 from decimal import Decimal
 
-diretorio_arquivos = 'testes/arquivos/'
-
 #Converte um único arquivo txt em múltiplos JSONs
 def converterTxtToJson(arquivo_txt):
     objetos_json = []
+    caminho_diretorio = os.path.join("C:", "arquivos")
+    caminho_arquivoTXT = os.path.join(caminho_diretorio, arquivo_txt)
 
-    with open(arquivo_txt, 'r', encoding='utf-8') as arquivo:
+    with open(caminho_arquivoTXT, 'r', encoding='utf-8') as arquivo:
         linhas = arquivo.readlines()
         for linha in linhas:
             linha = linha.strip()
