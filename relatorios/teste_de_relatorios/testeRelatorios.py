@@ -16,6 +16,9 @@ os.makedirs(pasta_teste, exist_ok=True)
 
 caminho_base_parametros = os.path.join(pasta_teste, 'baseParametros.json')
 
+# Caminho absoluto para o arquivo retorno_relatorio.json
+caminho_retorno_relatorio = r'C:\Ambientes\VsCode\EnviosEsfinge\relatorios\arquivos_gerados\retorno_relatorio.json'
+
 # Funções auxiliares
 def registrar_erro(mensagem):
     logging.error(mensagem)
@@ -42,10 +45,13 @@ def sobrescrever_identificador_unidade_gestora(codigo_ug):
 
 def obter_lista_relatorios():
     """Obtém a lista de relatórios do arquivo salvo."""
-    with open(os.path.join(diretorio_atual, 'arquivos_gerados', 'retorno_relatorio.json'), 'r') as file:
-        dados = json.load(file)
-    
-    return sorted(dados, key=lambda x: x['identificadorRelatorio'])
+    if os.path.exists(caminho_retorno_relatorio):
+        with open(caminho_retorno_relatorio, 'r') as file:
+            dados = json.load(file)
+        return sorted(dados, key=lambda x: x['identificadorRelatorio'])
+    else:
+        print(Fore.RED + f"Arquivo {caminho_retorno_relatorio} não encontrado!" + Style.RESET_ALL)
+        return []
 
 def carregar_parametros_base():
     """Carrega os parâmetros base do arquivo base de parâmetros."""
@@ -55,7 +61,7 @@ def carregar_parametros_base():
     return {}
 
 def atualizar_parametros_base(parametro_nome, valor):
-    """Atualiza ou adiciona um parâmetro no arquivo base de parâmetros."""
+    """Atualiza ou adiciona um parâmetro no arquivo base de parâmetros."""    
     if os.path.exists(caminho_base_parametros):
         with open(caminho_base_parametros, 'r') as file:
             parametros_base = json.load(file)

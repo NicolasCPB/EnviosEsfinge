@@ -1,0 +1,126 @@
+[
+    {
+        "parametroNome": "identificador_tipo_pessoa",
+        "valor": "1"
+    },
+    {
+        "parametroNome": "ANO",
+        "valor": "2024"
+    },
+    {
+        "parametroNome": "ANO_MES",
+        "valor": "202405"
+    },
+    {
+        "parametroNome": "IDENTIFICADOR_TIPOPERIODO",
+        "valor": "6"
+    },
+    {
+        "parametroNome": "NUMERO_TIPOPERIODO",
+        "valor": "4"
+    },
+    {
+        "parametroNome": "DATA_FIM",
+        "valor": "2024-05-31"
+    },
+    {
+        "parametroNome": "DATA_INICIO",
+        "valor": "2024-05-01"
+    },
+    {
+        "parametroNome": "COMPETENCIA_INICIO",
+        "valor": "202201"
+    },
+    {
+        "parametroNome": "tipo_operacao_credito_trib",
+        "valor": "1,2,3"
+    },
+    {
+        "parametroNome": "COMPETENCIA_FIM",
+        "valor": "202206"
+    },
+    {
+        "parametroNome": "tipo_credito_trib",
+        "valor": "1,2,3"
+    },
+    {
+        "parametroNome": "saldos_cred_tributario",
+        "valor": "1,2,3"
+    },
+    {
+        "parametroNome": "ano_opcao_todos",
+        "valor": "2024"
+    },
+    {
+        "parametroNome": "IDENTIFICADOR_UNIDADE_GESTORA",
+        "valor": "11116"
+    },
+    {
+        "parametroNome": "ANO_MES_FIM",
+        "valor": "202410"
+    },
+    {
+        "parametroNome": "ANO_MES_INICIO",
+        "valor": "202401"
+    },
+    {
+        "parametroNome": "entes_SGI_Usuario",
+        "valor": "255"
+    },
+    {
+        "parametroNome": "unidade_gestora_SGI_usuario",
+        "valor": "11116"
+    },
+    {
+        "parametroNome": "IDENTIFICADORSGI_USUARIO",
+        "valor": "1"
+    },
+    {
+        "parametroNome": "IDENTIFICADOR_PODERORGAO",
+        "valor": "1"
+    },
+    {
+        "parametroNome": "tipoPoderOrgaoTodos",
+        "valor": "1,2"
+    },
+    {
+        "parametroNome": "tipo_tributo",
+        "valor": "1"
+    },
+    {
+        "parametroNome": "codigo_tipo_texto_juridico",
+        "valor": "1,2,3,4,5,6,7,8,9,10,11,12,51,52"
+    },
+    {
+        "parametroNome": "codigo_tipo_parecer_controle_interno",
+        "valor": "1,2,3,4,5,6,7,8,9,10,11,12"
+    },
+    {
+        "parametroNome": "codigo_conta_contabil",
+        "valor": "0"
+    },
+    {
+        "parametroNome": "saldo_conta_corrente",
+        "valor": "1"
+    },
+    {
+        "parametroNome": "comunicacoes_prazo",
+        "valor": "0"
+    },
+    {
+        "parametroNome": "informacao_fase_ratificacao",
+        "valor": "56"
+    },
+    {
+        "parametroNome": "VALOR",
+        "valor": ""
+    },
+    {
+        "parametroNome": "ano_opcao_anterior2012",
+        "valor": "2024"
+    },
+    {
+        "parametroNome": "codigo_conta_corrente",
+        "valor": "1"
+    }
+]
